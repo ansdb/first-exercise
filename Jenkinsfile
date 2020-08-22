@@ -16,6 +16,12 @@ pipeline {
         sh 'tidy -q -e *.html'
       }
     }
-
+  stage('Upload to S3'){
+    steps{
+        withAWS(region:'us-west-2', credentials:'MyCredentials'){
+          s3Upload(pathStyleAccessEnabled:true, payloadSigningEnabled: true, file:'index.html', bucket:'exercise-3')
+        }
+      }
+    }
   }
 }
